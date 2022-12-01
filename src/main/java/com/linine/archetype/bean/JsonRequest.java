@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
  * 数据接收主类
  * <T>填入要自动注入的DTO或者
  */
+@Deprecated
 @Data
 @Validated
 @NoArgsConstructor
