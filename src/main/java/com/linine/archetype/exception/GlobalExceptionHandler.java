@@ -31,7 +31,7 @@ import java.util.Map;
  */
 @Slf4j
 @Order(0)
-@ControllerAdvice(basePackages = "com.quanta.archetype.controller")
+@ControllerAdvice(basePackages = "com.linine.archetype.controller")
 public class GlobalExceptionHandler {
 
     private static final String ERROR_MESSAGE_TEMPLATE = "%s\n[Msg]%s\n[File]%s\n[LogId]%s\n[Url]%s\n[Ip]%s\n[Args]%s\n[Token]%s";
@@ -43,26 +43,29 @@ public class GlobalExceptionHandler {
     public @ResponseBody
     JsonResponse<Object> errorResult(Exception e) throws IOException {
         log.error(e.getMessage());
-        if (isDebug) { // 本地调试只输出错误信息
+        if (isDebug) {
+            // 本地调试只输出错误信息，并返回前端详细信息
             e.printStackTrace();
-        } else {
-            WechatBot.send(createErrorMessage(e));
+            return JsonResponse.error(e.getMessage());
         }
-        return JsonResponse.error(String.format("操作失败，请重试[%s]", e.getMessage()));
+        // 发送错误信息到微信机器人
+        WechatBot.send(createErrorMessage(e));
+        // 线上环境仅返回系统错误
+        return JsonResponse.error();
     }
 
     // 数据校验异常
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public @ResponseBody JsonResponse<Object> validationErrorResult(MethodArgumentNotValidException e) {
         BindingResult result = e.getBindingResult();
-        StringBuffer sb = new StringBuffer();
+        StringBuffer stringBuffer = new StringBuffer();
         if (result.getFieldErrorCount() > 0) {
             List<FieldError> fieldErrors = result.getFieldErrors();
             for (FieldError fieldError : fieldErrors) {
-                sb.append(fieldError.getDefaultMessage());
+                stringBuffer.append(fieldError.getDefaultMessage());
             }
         }
-        return JsonResponse.paramError(String.format("参数校验错误[%s]", sb));
+        return JsonResponse.paramError(String.format("参数校验错误[%s]", stringBuffer));
     }
 
     // 数据校验异常
@@ -75,9 +78,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApiException.class)
     public @ResponseBody
     JsonResponse<Object> apiErrorResult(ApiException e) {
-        return JsonResponse.error(e.getMessage());
+        return JsonResponse.fail(e.getMessage());
     }
 
+    // 微信机器人错误信息生成
     private String createErrorMessage(Exception e) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         assert attributes != null;

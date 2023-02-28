@@ -10,7 +10,6 @@ import java.util.Map;
 public class BaseController {
     /**
      * 获取目前用户的id和role
-     *
      * @return id和role数组
      */
     private Map<String, Object> getCurrentUser() {
@@ -25,7 +24,6 @@ public class BaseController {
 
     /**
      * 获取用户uid
-     *
      * @return uid
      */
     public int getUid() {
@@ -34,7 +32,6 @@ public class BaseController {
 
     /**
      * 获取用户role
-     *
      * @return role
      */
     public int getRole() {

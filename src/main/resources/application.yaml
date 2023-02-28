@@ -4,13 +4,13 @@ project:
 
 spring:
   datasource:
-    username:
-    password:
+    username: root
+    password: 18991899
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
+    url: jdbc:mysql://localhost:3306/test
   redis:
-    host:
-    port:
+    host: 192.168.20.10
+    port: 6379
     database: 0
     password:
   mail:
@@ -35,3 +35,10 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+qcloud:
+  secret-id:
+  secret-key:
+  region:
+  url:
+  bucket-name:

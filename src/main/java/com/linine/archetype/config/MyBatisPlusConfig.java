@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @MapperScan("com.baomidou.cloud.service.*.mapper*")
 @EnableTransactionManagement
-@Configuration // 注册为配置类
+@Configuration
 public class MyBatisPlusConfig {
 
     // 分页插件配置(新版配置)

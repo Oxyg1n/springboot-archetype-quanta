@@ -12,7 +12,6 @@ import java.sql.SQLException;
 
 /**
  * mybatis中varchar到json类处理器
- *
  * @author Linine
  * @date 2022/11/13 15:56
  */
@@ -24,7 +23,6 @@ public class JsonTyperHandler extends BaseTypeHandler<JSONObject> {
 
     @Override
     public JSONObject getNullableResult(ResultSet resultSet, String s) throws SQLException {
-
         String jsonString = resultSet.getString(s);
         if (jsonString == null) return null;
         return JSON.parseObject(jsonString);

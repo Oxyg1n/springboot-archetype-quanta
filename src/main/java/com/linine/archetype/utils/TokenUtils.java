@@ -78,7 +78,6 @@ public class TokenUtils {
 
     /**
      * 获取token对应的id
-     *
      * @param key token
      * @return id
      */
@@ -88,7 +87,6 @@ public class TokenUtils {
 
     /**
      * 删除token
-     *
      * @param key 缓存key
      */
     private void destroyToken(String key) {
@@ -109,7 +107,6 @@ public class TokenUtils {
 
     /**
      * 安全退出
-     *
      * @param uid uid
      */
     public void safeExit(int uid) {

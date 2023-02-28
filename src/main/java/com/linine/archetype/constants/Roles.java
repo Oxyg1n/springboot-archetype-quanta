@@ -1,7 +1,7 @@
 package com.linine.archetype.constants;
 
 /**
- * description:
+ * 用户角色
  *
  * @author Leslie Leung
  * @date 2021/9/25

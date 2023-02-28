@@ -22,7 +22,7 @@ public class RedisUtils {
 
 
     @Autowired
-    @Qualifier("myRedisTemplate") //自定义缓存配置类
+    @Qualifier("redisTemplate") //自定义缓存配置类
     private RedisTemplate<String, Object> redisTemplate;
 
     public boolean hasKey(String key) {
@@ -127,15 +127,15 @@ public class RedisUtils {
     }
 
     // HASHMAP
-    public Object hget(String key, String item) {
+    public Object hashGet(String key, String item) {
         return redisTemplate.opsForHash().get(key, item);
     }
 
-    public Map<Object, Object> hmget(String key) {
+    public Map<Object, Object> hashMget(String key) {
         return redisTemplate.opsForHash().entries(key);
     }
 
-    public boolean hmset(String key, Map<String, Object> map) {
+    public boolean hashMset(String key, Map<String, Object> map) {
         try {
             redisTemplate.opsForHash().putAll(key, map);
             return true;
@@ -145,7 +145,7 @@ public class RedisUtils {
         }
     }
 
-    public boolean hmset(String key, Map<String, Object> map, long time) {
+    public boolean hashMset(String key, Map<String, Object> map, long time) {
         try {
             redisTemplate.opsForHash().putAll(key, map);
             if (time > 0) {
@@ -158,7 +158,7 @@ public class RedisUtils {
         }
     }
 
-    public boolean hset(String key, String item, Object value) {
+    public boolean hashSet(String key, String item, Object value) {
         try {
             redisTemplate.opsForHash().put(key, item, value);
             return true;
@@ -168,7 +168,7 @@ public class RedisUtils {
         }
     }
 
-    public boolean hset(String key, String item, Object value, long time) {
+    public boolean hashSet(String key, String item, Object value, long time) {
         try {
             redisTemplate.opsForHash().put(key, item, value);
             if (time > 0) {
@@ -181,19 +181,19 @@ public class RedisUtils {
         }
     }
 
-    public void hdel(String key, Object... item) {
+    public void hashDel(String key, Object... item) {
         redisTemplate.opsForHash().delete(key, item);
     }
 
-    public boolean hHasKey(String key, String item) {
+    public boolean hashHasKey(String key, String item) {
         return redisTemplate.opsForHash().hasKey(key, item);
     }
 
-    public double hincr(String key, String item, double delta) {
+    public double hashIncr(String key, String item, double delta) {
         return redisTemplate.opsForHash().increment(key, item, delta);
     }
 
-    public double hdecr(String key, String item, double delta) {
+    public double hashDecr(String key, String item, double delta) {
         return redisTemplate.opsForHash().increment(key, item, -delta);
     }
 

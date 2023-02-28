@@ -44,7 +44,7 @@ public class DemoController extends BaseController {
     }
 
     /**
-     * 顶级管理员
+     * 管理员
      */
     @RequestMapping("/admin")
     @RequiredPermission({Roles.ROLE_THIRD_ADMIN, Roles.ROLE_SECOND_ADMIN, Roles.ROLE_SUPER_ADMIN})

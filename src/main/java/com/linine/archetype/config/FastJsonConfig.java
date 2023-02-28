@@ -2,8 +2,11 @@ package com.linine.archetype.config;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 
 import java.nio.charset.StandardCharsets;
@@ -54,4 +57,5 @@ public class FastJsonConfig {
         converter.setFastJsonConfig(config);
         return converter;
     }
+
 }

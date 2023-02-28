@@ -29,9 +29,7 @@ public class MD5Utils {
     public static String md5(String string) {
         try {
             MessageDigest md = MessageDigest.getInstance("md5");
-
             byte[] bytes = md.digest(string.getBytes());
-
             return DigestUtils.md5DigestAsHex(bytes);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

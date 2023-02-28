@@ -53,7 +53,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-
         <!--        redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -103,6 +102,38 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+        <!--        微信开发工具-->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+
+        <!--        COS-->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.66</version>
+        </dependency>
+
+        <!--        hutool工具库-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+            <version>5.7.18</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.7.19</version>
+        </dependency>
+
+        <!--EasyExcel-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.0.5</version>
+        </dependency>
 
     </dependencies>
 

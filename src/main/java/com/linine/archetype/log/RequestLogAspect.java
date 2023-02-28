@@ -44,15 +44,15 @@ public class RequestLogAspect {
             logger.info(LOG_TEMPLATE,
                     logId,
                     request.getRequestURL().toString(),
-                    request.getHeader("X-Real-IP"),
                     request.getMethod(),
                     request.getRemoteAddr(),
+                    request.getHeader("X-Real-IP"),
                     joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName(),
                     args,
                     request.getHeader("Token"),
                     "");
         } else {
-            logger.info(LOG_TEMPLATE, logId, "", "", "", "", "", "", "Empty Request!");
+            logger.info(LOG_TEMPLATE, logId, "", "", "", "", "", "", "", "Empty Request!");
         }
     }
 }

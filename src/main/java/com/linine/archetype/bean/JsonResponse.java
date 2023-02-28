@@ -1,13 +1,16 @@
 package com.linine.archetype.bean;
 
 import com.linine.archetype.constants.ResultCode;
+import lombok.Getter;
 
 /**
- * description:
+ * 返回前端数据
  *
  * @author Leslie Leung
+ * @modify LiNine
  * @date 2021/9/13
  */
+@Getter
 public class JsonResponse<T> {
     private int code;
     private String msg;
@@ -49,12 +52,22 @@ public class JsonResponse<T> {
         return new JsonResponse<>(ResultCode.SUCCESS.getCode(), msg, data);
     }
 
-    public static JsonResponse<Object> error() {
+    public static JsonResponse<Object> fail() {
         return new JsonResponse<>(ResultCode.FAILED.getCode(), ResultCode.FAILED.getMsg());
     }
 
-    public static JsonResponse<Object> error(String msg) {
+    public static JsonResponse<Object> fail(String msg) {
         return new JsonResponse<>(ResultCode.FAILED.getCode(), msg);
+    }
+
+    // 系统异常
+    public static JsonResponse<Object> error() {
+        return new JsonResponse<>(ResultCode.SERVER_ERROR.getCode(), ResultCode.SERVER_ERROR.getMsg());
+    }
+
+    // 系统异常
+    public static JsonResponse<Object> error(String msg) {
+        return new JsonResponse<>(ResultCode.SERVER_ERROR.getCode(), msg);
     }
 
     // token异常
@@ -65,6 +78,11 @@ public class JsonResponse<T> {
     // token异常
     public static JsonResponse<Object> tokenError(String msg) {
         return new JsonResponse<>(ResultCode.UNAUTHORIZED.getCode(), msg);
+    }
+
+    // token异常返回数据
+    public static <T> JsonResponse<T> unauthorized(T data) {
+        return new JsonResponse<>(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMsg(), data);
     }
 
     // 参数验证异常
@@ -87,41 +105,9 @@ public class JsonResponse<T> {
         return new JsonResponse<>(ResultCode.FORBIDDEN.getCode(), msg);
     }
 
-    /**
-     * 未登录返回结果
-     */
-    public static <T> JsonResponse<T> unauthorized(T data) {
-        return new JsonResponse<>(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMsg(), data);
-    }
-
-    /**
-     * 未授权返回结果
-     */
+    // 权限异常返回数据
     public static <T> JsonResponse<T> forbidden(T data) {
         return new JsonResponse<>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMsg(), data);
     }
 
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 }

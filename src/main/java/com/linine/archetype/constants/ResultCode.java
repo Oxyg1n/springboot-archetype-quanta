@@ -1,7 +1,7 @@
 package com.linine.archetype.constants;
 
 /**
- * description:
+ * 响应状态码
  *
  * @author Leslie Leung
  * @date 2021/9/13
@@ -10,8 +10,8 @@ public enum ResultCode {
     SUCCESS(0, "操作成功"),
     FAILED(400, "操作失败"),
     SERVER_ERROR(500, "服务器错误"),
-    VALIDATE_FAILED(402, "参数检验失败"),
     UNAUTHORIZED(401, "暂未登录或token已经过期"),
+    VALIDATE_FAILED(402, "参数检验失败"),
     FORBIDDEN(403, "没有相关权限");
 
     private final int code;
