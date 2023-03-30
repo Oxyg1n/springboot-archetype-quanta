@@ -1,50 +1,28 @@
 package com.linine.archetype.utils;
 
+import com.linine.archetype.constants.FilePathPrefix;
 import com.linine.archetype.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.FileSystemUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.UUID;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Slf4j
 @Component
 public class FileUtils {
-    @Autowired
-    MD5Utils md5Utils;
+
+    private final MD5Utils md5Utils;
 
     @Value("${project.file-path}")
-    public String filePath;
+    public String fileMainPath;
 
-
-    /**
-     * 获取资源文件路径
-     */
-    public String getResourcePath() {
-        try {
-            File directory = new File("src/main/resources");
-            return directory.getCanonicalPath() + "/";
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new ApiException("I/O错误");
-        }
-    }
-
-    /**
-     * 自定义获取资源文件路径
-     */
-    public String getResourcePath(String path) {
-        try {
-            File directory = new File(path);
-            return directory.getCanonicalPath();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new ApiException("I/O错误");
-        }
+    public FileUtils(MD5Utils md5Utils) {
+        this.md5Utils = md5Utils;
     }
 
     /**
@@ -56,63 +34,99 @@ public class FileUtils {
     }
 
     /**
-     * 删除文件
+     * 获得文件md5
+     *
+     * @param file 文件
+     * @return 文件md5
      */
-    public boolean deleteFile(String path) {
-        return FileSystemUtils.deleteRecursively(new File(path));
+    public String getFileMd5(MultipartFile file) {
+        try (InputStream inputStream = file.getInputStream()) {
+            return DigestUtils.md5DigestAsHex(inputStream);
+        } catch (IOException e) {
+            log.warn(e.getClass() + "|" + e.getMessage() + "|" + e.getCause());
+            throw new ApiException("计算文件MD5错误");
+        }
     }
 
     /**
      * 获得文件格式
      *
      * @param multipartFile 文件
-     * @return
+     * @return 文件格式
      */
     public String getFormat(MultipartFile multipartFile) {
         String fileName = multipartFile.getOriginalFilename();
-        String format = fileName.substring(fileName.lastIndexOf("."));
-        return format;
+        if (fileName == null) throw new ApiException("文件名称为空");
+        return fileName.substring(fileName.lastIndexOf("."));
     }
 
-    /**
-     * 上传文件
-     * @param uploadFile 文件
-     * @param format     文件格式
-     * @return 文件新名称
-     */
-    private String uploadFile(MultipartFile uploadFile, String format, String path) {
-        // 定位存放的文件夹
-        File folder = new File(path);
-        // 不存在则新建
-        boolean mkdirs = false;
-        if (!folder.isDirectory()) {
-            mkdirs = folder.mkdirs();
-        }
-        if (!mkdirs) throw new ApiException("存放文件错误,创建文件夹失败");
-        // 文件夹更名
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        String newName = uuid + format;
-        File file = new File(folder, newName);
 
+    private void uploadFileWithFileName(MultipartFile uploadFile, String parentPath, String fileName) {
+        // 定位存放的文件夹
+        File folder = new File(parentPath);
+        // 不存在则新建
+        boolean exists = folder.exists();
+        if (!exists) exists = folder.mkdirs();
+        if (!exists) {
+            log.warn("存放文件错误,创建文件夹失败:" + folder.getAbsolutePath());
+            throw new ApiException("I/O错误");
+        }
+        // 文件夹更名
+        File file = new File(folder, fileName);
         // 文件保存
         try {
             uploadFile.transferTo(file);
-
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new ApiException("I/O错误");
         }
-        return newName;
+    }
+
+    /**
+     * 上传文件
+     * 先计算文件的MD5值，若已经存在相同MD5命名的文件则返回，否则写入后返回
+     *
+     * @return 次级存储路径+新文件名
+     */
+    private String uploadFile(MultipartFile file, String fileSubPath) {
+        String md5 = getFileMd5(file);
+        String format = getFormat(file);
+        String storageFileName = md5 + format;
+        if (!checkFileExist(fileSubPath + storageFileName))
+            uploadFileWithFileName(file, fileMainPath + fileSubPath, storageFileName);
+        return fileSubPath + storageFileName;
+    }
+
+    /**
+     * 用户上传文件
+     *
+     * @param file 文件
+     * @return
+     */
+    public String userUploadFile(MultipartFile file) {
+        return uploadFile(file, FilePathPrefix.USER_UPLOAD_PREFIX);
+    }
+
+    /**
+     * 用户上传头像文件
+     *
+     * @param file 文件
+     * @return
+     */
+    public String userUploadAvatar(MultipartFile file) {
+        return uploadFile(file, FilePathPrefix.USER_AVATAR_PREFIX);
     }
 
 
     /**
-     * 上传头像文件
-     * @param file 文件
-     * @return 新文件名
+     * 根据次级名称+文件名判断文件是否存在
+     *
+     * @param fileNameWithSubPath 文件次级目录+文件名
+     * @return
      */
-    public String uploadAvatar(MultipartFile file) {
-        return uploadFile(file, getFormat(file), filePath + "avatar/");
+    public boolean checkFileExist(String fileNameWithSubPath) {
+        return new File(fileMainPath, fileNameWithSubPath).exists();
     }
+
 
 }

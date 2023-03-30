@@ -4,28 +4,37 @@ import com.linine.archetype.exception.ApiException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 
 /**
+ * 发送邮件工具类
+ *
  * @author Leslie Leung
- * @description 发送邮件工具类
- * @date 2021/11/9
+ * @since 2021/11/9
  */
 @Component
 public class MailUtils {
-    final
-    JavaMailSender javaMailSender;
+
+    private final JavaMailSender javaMailSender;
+
+    private final TemplateEngine templateEngine;
 
     @Value("${spring.mail.username}")
     private String mailFrom;
 
-    public MailUtils(JavaMailSender javaMailSender) {
+    public MailUtils(JavaMailSender javaMailSender, TemplateEngine templateEngine) {
         this.javaMailSender = javaMailSender;
+        this.templateEngine = templateEngine;
     }
+
+    private static final String MAIL_TITLE = "项目名称";
 
     /**
      * 发送邮件基础方法
@@ -39,7 +48,7 @@ public class MailUtils {
         MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMailMessage, true, "utf-8");
-            messageHelper.setFrom(mailFrom, "广外劳动学时");
+            messageHelper.setFrom(mailFrom, MAIL_TITLE);
             messageHelper.setTo(recipients);
             messageHelper.setSubject(title);
             messageHelper.setText(content, isHtml);
@@ -63,5 +72,38 @@ public class MailUtils {
             sb.append(CHARACTERS.charAt((int) (Math.random() * (CHARACTERS.length()))));
         }
         return sb.toString();
+    }
+
+    @Async("taskExecutor")
+    public void sendVerifyMail(String email, String code) {
+        String[] emails = {email};
+        // 调用templateEngine渲染页面
+        Context context = new Context();
+        context.setVariable("email", email);
+        context.setVariable("code", code);
+        String process = templateEngine.process("VerifyMail", context);
+        sendMail(emails, MAIL_TITLE + "注册验证", process, true);
+    }
+
+    @Async("taskExecutor")
+    public void sendResetMail(String email, String code) {
+        String[] emails = {email};
+        // 调用templateEngine渲染页面
+        Context context = new Context();
+        context.setVariable("email", email);
+        context.setVariable("code", code);
+        String process = templateEngine.process("ResetMail", context);
+        sendMail(emails, MAIL_TITLE + "找回密码", process, true);
+    }
+
+    @Async("taskExecutor")
+    public void sendChangeMail(String email, String code) {
+        String[] emails = {email};
+        // 调用templateEngine渲染页面
+        Context context = new Context();
+        context.setVariable("email", email);
+        context.setVariable("code", code);
+        String process = templateEngine.process("ChangeMail", context);
+        sendMail(emails, MAIL_TITLE + "更改绑定邮箱", process, true);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
  * 腾讯云COS配置
  *
  * @author Leslie Leung
- * @date 2021/11/2
+ * @since 2021/11/2
  */
 @Configuration
 @ConfigurationProperties(prefix = "qcloud.cos")

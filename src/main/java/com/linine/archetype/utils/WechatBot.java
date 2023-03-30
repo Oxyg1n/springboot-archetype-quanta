@@ -8,8 +8,9 @@ import org.apache.http.impl.client.HttpClients;
 import java.io.IOException;
 
 /**
+ * 企业微信通知机器人
+ *
  * @author Leslie Leung
- * @description
  * @date 2021/12/5
  */
 public class WechatBot {

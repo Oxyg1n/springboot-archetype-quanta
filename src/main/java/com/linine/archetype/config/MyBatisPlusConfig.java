@@ -9,9 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
+ * MybatisPlus配置
+ *
  * @author quantacenter
- * @description MybatisPlus配置
- * @date 2021/11/25
+ * @since 2021/11/25
  */
 @MapperScan("com.baomidou.cloud.service.*.mapper*")
 @EnableTransactionManagement

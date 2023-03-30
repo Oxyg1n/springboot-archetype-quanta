@@ -4,7 +4,7 @@ package com.linine.archetype.constants;
  * 安全
  *
  * @author Leslie Leung
- * @date 2021/9/12
+ * @since 2021/9/12
  */
 public class Security {
     // 加密盐值

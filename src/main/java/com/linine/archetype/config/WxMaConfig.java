@@ -3,23 +3,27 @@ package com.linine.archetype.config;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl;
 import cn.binarywang.wx.miniapp.config.impl.WxMaDefaultConfigImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 微信小程序服务
+ *
  * @author Leslie Leung
- * @description
- * @date 2021/10/23
+ * @since 2021/10/23
  */
 @Configuration
 @ConditionalOnClass(WxMaService.class)
 public class WxMaConfig {
 
-    @Autowired
-    private WxMaProperties wxMaProperties;
+
+    private final WxMaProperties wxMaProperties;
+
+    public WxMaConfig(WxMaProperties wxMaProperties) {
+        this.wxMaProperties = wxMaProperties;
+    }
 
     @Bean
     @ConditionalOnMissingBean

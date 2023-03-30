@@ -1,10 +1,12 @@
 package com.linine.archetype.exception;
 
 /**
- * @author Leslie Leung
- * @description 基本上有问题就会抛出的异常，会在{@link GlobalExceptionHandler}统一处理
+ * 自定义业务异常
+ * 基本上有问题就会抛出的异常，会在{@link GlobalExceptionHandler}统一处理
  * ！！！注意！！！无论如何不要在代码中catch Exception，可能会误捕获ApiException
- * @date 2021/12/3
+ *
+ * @author Leslie Leung
+ * @since 2021/12/3
  */
 public class ApiException extends RuntimeException {
 

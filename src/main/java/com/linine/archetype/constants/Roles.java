@@ -4,7 +4,7 @@ package com.linine.archetype.constants;
  * 用户角色
  *
  * @author Leslie Leung
- * @date 2021/9/25
+ * @since 2021/9/25
  */
 public class Roles {
     private Roles() {

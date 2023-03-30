@@ -25,19 +25,13 @@ public class ExcelUtils {
     @Autowired
     FileUtils fileUtils;
 
-    /**
-     * 生成Excel路径
-     */
-    public String makeExcel() {
-        return fileUtils.getResourcePath() + "static/excel/" + fileUtils.getRandomFileName() + ".xlsx";
-    }
+
 
     /**
      * 写入数据
      * 返回写入excel路径
      */
-    public String buildExcel(List<?> data, Class<?> c) {
-        String filePath = makeExcel();
+    public String buildExcel(String filePath, List<?> data, Class<?> c) {
         EasyExcel.write(filePath, c)
                 .excelType(ExcelTypeEnum.XLSX)
                 .sheet("数据")
@@ -49,8 +43,7 @@ public class ExcelUtils {
      * 写入数据 可自定义表名
      * 返回写入excel路径
      */
-    public String buildExcel(List<?> data, Class<?> c, String sheetName) {
-        String filePath = makeExcel();
+    public String buildExcel(String filePath, List<?> data, Class<?> c, String sheetName) {
         EasyExcel.write(filePath, c)
                 .excelType(ExcelTypeEnum.XLSX)
                 .sheet(sheetName)

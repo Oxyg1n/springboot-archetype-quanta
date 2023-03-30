@@ -15,9 +15,10 @@ import java.util.Arrays;
 import java.util.UUID;
 
 /**
+ * 日志切面
+ *
  * @author Leslie Leung
- * @description
- * @date 2021/12/2
+ * @since 2021/12/2
  */
 @Aspect
 @Component

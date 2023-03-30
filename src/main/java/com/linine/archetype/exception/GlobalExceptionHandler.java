@@ -25,9 +25,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 全局异常处理器
+ *
  * @author Leslie Leung
- * @description
- * @date 2021/12/5
+ * modify by linine
+ * @since 2021/12/5
  */
 @Slf4j
 @Order(0)
@@ -46,12 +48,12 @@ public class GlobalExceptionHandler {
         if (isDebug) {
             // 本地调试只输出错误信息，并返回前端详细信息
             e.printStackTrace();
-            return JsonResponse.error(e.getMessage());
+            return JsonResponse.systemError(e.getMessage());
         }
         // 发送错误信息到微信机器人
         WechatBot.send(createErrorMessage(e));
         // 线上环境仅返回系统错误
-        return JsonResponse.error();
+        return JsonResponse.systemError();
     }
 
     // 数据校验异常
@@ -61,8 +63,9 @@ public class GlobalExceptionHandler {
         StringBuffer stringBuffer = new StringBuffer();
         if (result.getFieldErrorCount() > 0) {
             List<FieldError> fieldErrors = result.getFieldErrors();
-            for (FieldError fieldError : fieldErrors) {
-                stringBuffer.append(fieldError.getDefaultMessage());
+            for (int i = 0; i < fieldErrors.size(); i++) {
+                stringBuffer.append(fieldErrors.get(i).getDefaultMessage());
+                if (i != fieldErrors.size() - 1) stringBuffer.append(',');
             }
         }
         return JsonResponse.paramError(String.format("参数校验错误[%s]", stringBuffer));
@@ -72,6 +75,31 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     public @ResponseBody JsonResponse<Object> validationErrorResult(ValidationException e) {
         return JsonResponse.paramError(String.format("参数校验错误[%s]", e.getMessage()));
+    }
+
+    // 参数校验异常
+    @ExceptionHandler(InvalidParameterException.class)
+    public @ResponseBody JsonResponse<Object> InvalidParameterResult(InvalidParameterException e) {
+        if (e.getMessage() == null) return JsonResponse.paramError(e.getMessage());
+        return JsonResponse.paramError();
+    }
+
+    // 查看资源权限错误异常
+    @ExceptionHandler(PermissionDeniedException.class)
+    public @ResponseBody JsonResponse<Object> permissionDeniedResult(PermissionDeniedException e) {
+        return JsonResponse.forbidden();
+    }
+
+    // 资源不存在异常
+    @ExceptionHandler(RecordNotFoundException.class)
+    public @ResponseBody JsonResponse<Object> recordNotFoundResult(RecordNotFoundException e) {
+        return JsonResponse.notFound();
+    }
+
+    // 请求限流异常
+    @ExceptionHandler(TooManyRequestException.class)
+    public @ResponseBody JsonResponse<Object> tooManyRequestResult(TooManyRequestException e) {
+        return JsonResponse.tooManyRequests();
     }
 
     // 自定义异常处理类

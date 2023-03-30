@@ -2,11 +2,8 @@ package com.linine.archetype.config;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 
 import java.nio.charset.StandardCharsets;
@@ -14,9 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 响应前端请求json的消息转换器Fastjson
+ *
  * @author quantacenter
- * @description FastJson配置
- * @date 2021/11/25
+ * @since 2021/11/25
  */
 
 @Configuration
@@ -52,7 +50,10 @@ public class FastJsonConfig {
         config.setCharset(StandardCharsets.UTF_8);
         config.setSerializerFeatures(
                 SerializerFeature.PrettyFormat,
-                SerializerFeature.WriteNullListAsEmpty
+                // null值集合输出为空集合
+                SerializerFeature.WriteNullListAsEmpty,
+                // 解决循环应用问题
+                SerializerFeature.DisableCircularReferenceDetect
         );
         converter.setFastJsonConfig(config);
         return converter;

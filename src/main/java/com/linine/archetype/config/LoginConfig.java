@@ -1,7 +1,6 @@
 package com.linine.archetype.config;
 
 import com.linine.archetype.interceptor.AuthInterceptor;
-import com.linine.archetype.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -9,9 +8,10 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * webMvc配置
+ *
  * @author Leslie Leung
- * @description 拦截器配置
- * @date 2021/9/24
+ * @since 2021/9/24
  */
 @Configuration
 public class LoginConfig implements WebMvcConfigurer {

@@ -6,7 +6,6 @@ import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.region.Region;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,13 +13,16 @@ import org.springframework.context.annotation.Configuration;
  * 腾讯云COS对象存储配置
  *
  * @author Leslie Leung
- * @date 2021/11/3
+ * @since 2021/11/3
  */
 @Configuration
 public class COSConfig {
 
-    @Autowired
-    private COSProperties COSProperties;
+    private final COSProperties COSProperties;
+
+    public COSConfig(COSProperties COSProperties) {
+        this.COSProperties = COSProperties;
+    }
 
     @Bean
     public COSClient cosClient() {

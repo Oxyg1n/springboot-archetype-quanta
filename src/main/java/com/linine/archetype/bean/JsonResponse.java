@@ -7,8 +7,8 @@ import lombok.Getter;
  * 返回前端数据
  *
  * @author Leslie Leung
- * @modify LiNine
- * @date 2021/9/13
+ * modify by linine
+ * @since 2021/9/13
  */
 @Getter
 public class JsonResponse<T> {
@@ -24,11 +24,6 @@ public class JsonResponse<T> {
         this.msg = msg;
     }
 
-    protected JsonResponse(T data) {
-        this.code = 0;
-        this.msg = "操作成功";
-        this.data = data;
-    }
 
     protected JsonResponse(int code, String msg, T data) {
         this.code = code;
@@ -36,6 +31,7 @@ public class JsonResponse<T> {
         this.msg = msg;
     }
 
+    // 操作成功
     public static <T> JsonResponse<T> success() {
         return new JsonResponse<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg());
     }
@@ -52,6 +48,7 @@ public class JsonResponse<T> {
         return new JsonResponse<>(ResultCode.SUCCESS.getCode(), msg, data);
     }
 
+    // 操作失败
     public static JsonResponse<Object> fail() {
         return new JsonResponse<>(ResultCode.FAILED.getCode(), ResultCode.FAILED.getMsg());
     }
@@ -61,12 +58,11 @@ public class JsonResponse<T> {
     }
 
     // 系统异常
-    public static JsonResponse<Object> error() {
+    public static JsonResponse<Object> systemError() {
         return new JsonResponse<>(ResultCode.SERVER_ERROR.getCode(), ResultCode.SERVER_ERROR.getMsg());
     }
 
-    // 系统异常
-    public static JsonResponse<Object> error(String msg) {
+    public static JsonResponse<Object> systemError(String msg) {
         return new JsonResponse<>(ResultCode.SERVER_ERROR.getCode(), msg);
     }
 
@@ -75,39 +71,41 @@ public class JsonResponse<T> {
         return new JsonResponse<>(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMsg());
     }
 
-    // token异常
     public static JsonResponse<Object> tokenError(String msg) {
         return new JsonResponse<>(ResultCode.UNAUTHORIZED.getCode(), msg);
     }
 
-    // token异常返回数据
-    public static <T> JsonResponse<T> unauthorized(T data) {
-        return new JsonResponse<>(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMsg(), data);
-    }
 
     // 参数验证异常
     public static JsonResponse<Object> paramError() {
         return new JsonResponse<>(ResultCode.VALIDATE_FAILED.getCode(), ResultCode.VALIDATE_FAILED.getMsg());
     }
 
-    // 参数验证异常
     public static JsonResponse<Object> paramError(String msg) {
         return new JsonResponse<>(ResultCode.VALIDATE_FAILED.getCode(), msg);
     }
 
     // 权限异常
-    public static JsonResponse<Object> permissionError() {
+    public static JsonResponse<Object> forbidden() {
         return new JsonResponse<>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMsg());
     }
 
-    // 权限异常
-    public static JsonResponse<Object> permissionError(String msg) {
+    public static JsonResponse<Object> forbidden(String msg) {
         return new JsonResponse<>(ResultCode.FORBIDDEN.getCode(), msg);
     }
 
-    // 权限异常返回数据
-    public static <T> JsonResponse<T> forbidden(T data) {
-        return new JsonResponse<>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMsg(), data);
+    // 限流异常
+    public static JsonResponse<Object> tooManyRequests() {
+        return new JsonResponse<>(ResultCode.TOO_MANY_REQUESTS.getCode(), ResultCode.TOO_MANY_REQUESTS.getMsg());
+    }
+
+    // 资源不存在
+    public static JsonResponse<Object> notFound() {
+        return new JsonResponse<>(ResultCode.NOT_FOUND.getCode(), ResultCode.NOT_FOUND.getMsg());
+    }
+
+    public static JsonResponse<Object> notFound(String msg) {
+        return new JsonResponse<>(ResultCode.NOT_FOUND.getCode(), msg);
     }
 
 }

@@ -6,9 +6,10 @@ import org.springframework.context.annotation.Configuration;
 
 
 /**
+ * 微信小程序配置
+ *
  * @author Leslie Leung
- * @description
- * @date 2021/10/16
+ * @since 2021/10/16
  */
 @Configuration
 @ConfigurationProperties(prefix = "wx")

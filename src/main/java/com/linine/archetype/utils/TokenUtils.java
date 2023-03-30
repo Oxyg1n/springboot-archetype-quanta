@@ -67,17 +67,13 @@ public class TokenUtils {
      * @return 权限
      */
     public int getTokenRole(String key) {
-        int role;
-        try {
-            role = retrieveToken(key).get("role");
-        } catch (NullPointerException e) {
-            throw new ApiException("token无效");
-        }
-        return role;
+        if (retrieveToken(key) == null) return -1;
+        return retrieveToken(key).get("role");
     }
 
     /**
      * 获取token对应的id
+     *
      * @param key token
      * @return id
      */
@@ -87,6 +83,7 @@ public class TokenUtils {
 
     /**
      * 删除token
+     *
      * @param key 缓存key
      */
     private void destroyToken(String key) {
@@ -107,6 +104,7 @@ public class TokenUtils {
 
     /**
      * 安全退出
+     *
      * @param uid uid
      */
     public void safeExit(int uid) {
