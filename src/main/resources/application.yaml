@@ -42,3 +42,8 @@ qcloud:
   region:
   url:
   bucket-name:
+minio:
+  url:
+  accessKey:
+  secretKey:
+  bucketName:
