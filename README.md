@@ -1,30 +1,54 @@
-# Springboot快速开发脚手架
+# Quanta后端Springboot快速开发脚手架
 
-> 林九 221201
+> 林九 230804
 
 ## 框架介绍
 
-**基于Quanta研发部后端脚手架，特此感谢Quanta和17th CEO 泽帆哥**
-
-主要增加和修改习惯于自己开发的配置和类
+**基于Quanta17th研发部脚手架改进优化，感谢后端泽帆师兄和仕鹏师兄的指点和关照**
 
 ## 开发须知
 
-**配置数据库、存放文件路径、邮箱**
+> 修改配置文件
 
-**需要修改包名的地方**
+```yaml
+project:
+  isDebug: true # debug模式为true，当出现异常时会打印异常在控制台并且返回给前端，false则不会
+  filePath: E:/test # 用户文件保存路径
+
+user:
+  tokenLifeDays: 7 # 用户token有效期/天
+
+# mysql配置 redis配置 mail邮箱配置
+# （可选，bu'x）cos配置 oss配置 minio配置
+```
+
+> 修改包名
 
 - 启动类ArchetypeApplication中的`@MapperScan`
 - exception下的异常捕获类GlobalExceptionHandler中的`@ControllerAdvice`
-- log包下的RequestLogAspect `@Pointcut`
+- log包下的RequestLogAspect `@Pointcut`切面
+
+> 根据需要可删除的部分
+
+- WxMaConfig & WxMaProperties 提供微信小程序的功能 无需对接小程序可删除
+- QcloudConfig & QcloudProperties 无需使用腾讯云储存桶功能时可删除
+- OSSConfig & OSSProperties & OSSUtils 无需使用阿里云对象存储功能时可删除
+- MinioConfig & MinioUtils 无需使用minio对象存储功能时可删除
+
+> 可选使用代码生成器
+
+- CodeGenerator 根据注释填入对应信息后直接运行即可一键生成controller service mapper entity
+- 生成的entity需要手动调整一些属性的类型
+    - 比如数据库中的tinyint会被设置为boolean
+    - 时间类型
 
 ## 功能介绍
 
-**基于redis的多级权限管理**
+> 基于redis的多级权限管理
 
 利用权限拦截注解RequiredPermission中的参数进行对应权限拦截
 
-具体流程：
+**具体流程：**
 
 请求进入拦截器
 
@@ -39,13 +63,12 @@
           - 都不允许=>拒绝访问
           - 允许=>放行
 
-![](https://imagebed-1309295650.cos.ap-guangzhou.myqcloud.com/note/202212012219865.png)
+![](https://images-new-1309295650.cos.ap-guangzhou.myqcloud.com/note/20230804010111.png)
 
 **全局异常捕获&告警**
 
 - 利用微信企业微信机器人告警
 - 当线上/测试环境出现异常时 通过企业微信机器人发送信息告警
 
-## 最后
 
-**由衷感谢Quanta和各位师兄师姐对我的帮助和支持😘**
+

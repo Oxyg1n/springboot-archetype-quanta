@@ -1,13 +1,19 @@
+# 注意最好用驼峰命名法
 project:
   isDebug: true
-  file-path:
+  filePath: E:/test
+
+user:
+  tokenLifeDays: 7
+server:
+  port: 8080
 
 spring:
   datasource:
     username: root
-    password: 18991899
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test
+    url: jdbc:mysql://127.0.0.1:3306/test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
   redis:
     host: 192.168.20.10
     port: 6379
@@ -29,21 +35,40 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 15MB
-      max-request-size: 10MB
+      max-file-size: 500MB
+      max-request-size: 1000MB
 
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+# 腾讯云COS配置
 qcloud:
-  secret-id:
-  secret-key:
-  region:
-  url:
-  bucket-name:
+  cos:
+    secretId:
+    secretKey:
+    region:
+    url:
+    bucketName:
+
+# minio对象存储配置
 minio:
   url:
   accessKey:
   secretKey:
   bucketName:
+
+# 阿里云OSS配置
+aliyun:
+  oss:
+    accessKeyId:
+    accessKeySecret:
+    endPoint:
+    bucketName:
+    urlPrefix:
+
+#微信小程序
+wx:
+  app-id:
+  app-secret:
+  is-debug: true

@@ -1,5 +1,5 @@
 
-FROM openjdk:8
+FROM frolvlad/alpine-java:jdk8-slim
 #设置时区
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
