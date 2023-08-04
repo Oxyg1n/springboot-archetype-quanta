@@ -19,7 +19,7 @@ user:
   tokenLifeDays: 7 # 用户token有效期/天
 
 # mysql配置 redis配置 mail邮箱配置
-# （可选，bu'x）cos配置 oss配置 minio配置
+# （可选，不需要可以删除）cos配置 oss配置 minio配置
 ```
 
 > 修改包名
