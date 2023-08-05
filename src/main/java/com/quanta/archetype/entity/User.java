@@ -27,6 +27,9 @@ public class User implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @TableField(value = "role")
+    private Integer role;
+
     @TableField("name")
     private String name;
 
