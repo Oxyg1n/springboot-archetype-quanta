@@ -11,11 +11,11 @@ import com.quanta.archetype.exception.InvalidParameterException;
  */
 public class AssertUtils {
 
-    public static void check(String data, RegAssert reqStr) {
+    public static void checkThrowException(String data, RegAssert reqStr) {
         if (!data.matches(reqStr.getRegStr())) throw new InvalidParameterException();
     }
 
-    public static boolean checkWithoutException(String data, RegAssert reqStr) {
+    public static boolean check(String data, RegAssert reqStr) {
         return data.matches(reqStr.getRegStr());
     }
 

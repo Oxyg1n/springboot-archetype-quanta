@@ -13,15 +13,15 @@ public enum RedisKeyTemplates {
     /**
      * user+userId
      */
-    TOKEN("user:%s"),
+    TOKEN("user:{0}"),
     /**
      * register_code+邮箱
      */
-    VERIFICATION_REGISTER_PREFIX("register_code:%s"),
+    VERIFICATION_REGISTER_PREFIX("register_code:{0}"),
     /**
      * reset_code+邮箱
      */
-    VERIFICATION_RESET_PREFIX("reset_code:%s");
+    VERIFICATION_RESET_PREFIX("reset_code:{0}");
 
 
     private final String template;

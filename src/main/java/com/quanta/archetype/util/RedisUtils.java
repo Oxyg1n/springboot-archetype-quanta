@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,6 +32,7 @@ import java.util.stream.StreamSupport;
 @SuppressWarnings("ConstantConditions")
 public class RedisUtils {
 
+    private final Pattern pattern = Pattern.compile("\\{[0-9]\\}");
 
     @Autowired
     @Qualifier("redisTemplate") //自定义缓存配置类
@@ -40,15 +43,29 @@ public class RedisUtils {
      * 防止参数为空导致key生成不合法
      *
      * @param template 生成key模板
-     * @param args     参数
+     * @param arg/args 参数
      * @return redisKey
-     * @since 1.1
+     * @since 1.2
      */
-    public String generateKey(RedisKeyTemplates template, String... args) {
-        for (String arg : args) {
-            if (!StringUtils.hasText(arg)) throw new IllegalArgumentException("arg must be non blank!");
+    public String generateKey(RedisKeyTemplates template, String arg) {
+        if (!StringUtils.hasText(arg)) throw new IllegalArgumentException("arg must be non blank!");
+        return template.getTemplate().replace("{0}", arg);
+    }
+
+    public String generateKey(RedisKeyTemplates template, String[] args) {
+        if (args == null) throw new IllegalArgumentException("Argument count not match template");
+        String result = template.getTemplate();
+        Matcher matcher = pattern.matcher(result);
+        int argsCount = 0;
+        while (matcher.find()) {
+            argsCount++;
         }
-        return String.format(template.getTemplate(), (Object) args);
+        if (argsCount != args.length) throw new IllegalArgumentException("Argument count not match template");
+        for (int i = 0; i < args.length; i++) {
+            if (!StringUtils.hasText(args[i])) throw new IllegalArgumentException("Argument must be non blank!");
+            result = result.replace("{" + i + "}", args[i]);
+        }
+        return result;
     }
 
     /**

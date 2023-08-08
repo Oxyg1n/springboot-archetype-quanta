@@ -22,22 +22,8 @@ import java.io.InputStream;
 @Component
 public class FileUtils {
 
-    private final MD5Utils md5Utils;
-
     @Value("${project.filePath}")
     public String fileMainPath;
-
-    public FileUtils(MD5Utils md5Utils) {
-        this.md5Utils = md5Utils;
-    }
-
-    /**
-     * 获取一个随机文件名
-     */
-    public String getRandomFileName() {
-        String salt = md5Utils.getSalt();
-        return System.currentTimeMillis() + salt;
-    }
 
     /**
      * 获得文件md5

@@ -40,9 +40,9 @@ public class COSUtils {
      * jpg png gif
      *
      * @param file 要上传的图片
-     * @return 图片url
+     * @return 图片子路径
      */
-    public String uploadPhoto(MultipartFile file) {
+    public String uploadImg(MultipartFile file) {
         String fileName;
         try {
             fileName = file.getOriginalFilename();
@@ -71,5 +71,16 @@ public class COSUtils {
             throw new ApiException("COS上传错误，请重试");
         }
         return fileName;
+    }
+
+    /**
+     * 上传图片
+     * jpg png gif
+     *
+     * @param file 要上传的图片
+     * @return 完整访问路径
+     */
+    public String uploadImgWithUrl(MultipartFile file) {
+        return cosProperties.getUrl() + uploadImg(file);
     }
 }

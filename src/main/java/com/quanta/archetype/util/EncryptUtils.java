@@ -3,6 +3,7 @@ package com.quanta.archetype.util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,10 +16,10 @@ import java.security.NoSuchAlgorithmException;
  */
 @Slf4j
 @Component
-public class MD5Utils {
+public class EncryptUtils {
 
     // 私有化构造函数，防止new对象
-    private MD5Utils() {
+    private EncryptUtils() {
     }
 
     /**
@@ -47,12 +48,9 @@ public class MD5Utils {
      */
     public static String md5(String string, String salt) {
         try {
-            StringBuilder sb = new StringBuilder();
-            sb.append(string).append(salt);
+            String sb = string + salt;
             MessageDigest md = MessageDigest.getInstance("md5");
-
-            byte[] bytes = md.digest(sb.toString().getBytes());
-
+            byte[] bytes = md.digest(sb.getBytes());
             return DigestUtils.md5DigestAsHex(bytes);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -72,7 +70,20 @@ public class MD5Utils {
             sb.append(str.charAt(temp));
         }
         return sb.toString();
+    }
 
+    /**
+     * 手机号脱敏
+     * 例如 138****4894
+     *
+     * @param mobile 完整手机号
+     * @return 脱敏后的手机号
+     */
+    public static String mobileEncrypt(String mobile) {
+        if (!StringUtils.hasText(mobile) || (mobile.length() != 11)) {
+            return mobile;
+        }
+        return mobile.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
     }
 
 }
